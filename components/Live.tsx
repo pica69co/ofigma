@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import { useMyPresence, useOthers } from "@/liveblocks.config";
 import LiveCursors from "./cursor/LiveCursors";
 import { CursorMode } from "@/types/type";
@@ -54,6 +54,35 @@ const Live = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const onKeyUp = (event: KeyboardEvent) => {
+      if (event.key === "/") {
+        setCursorState({
+          mode: CursorMode.Chat,
+          previousMessage: null,
+          message: "",
+        });
+      } else if (event.key === "Escape") {
+        updateMyPresence({ message: "" });
+        setCursorState({
+          mode: CursorMode.Hidden,
+        });
+      }
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "/") {
+        event.preventDefault();
+      }
+    };
+    window.addEventListener("keyup", onKeyUp);
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.removeEventListener("keyup", onKeyUp);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [updateMyPresence]);
   return (
     <div
       onPointerMove={handlePointerMove}
