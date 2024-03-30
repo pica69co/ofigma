@@ -45,7 +45,7 @@ const Live = ({ canvasRef, undo, redo }: Props) => {
    *
    * useMyPresence: https://liveblocks.io/docs/api-reference/liveblocks-react#useMyPresence
    */
-  const [{ cursor }, updateMyPresence] = useMyPresence() as any;
+  const [{ cursor }, updateMyPresence] = useMyPresence();
 
   /**
    * useBroadcastEvent is used to broadcast an event to all the other users in the room.
@@ -108,7 +108,7 @@ const Live = ({ canvasRef, undo, redo }: Props) => {
    * useEventListener: https://liveblocks.io/docs/api-reference/liveblocks-react#useEventListener
    */
   useEventListener((eventData) => {
-    const event = eventData.event as ReactionEvent;
+    const event = eventData.event;
     setReactions((reactions) =>
       reactions.concat([
         {
